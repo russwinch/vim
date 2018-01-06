@@ -1,29 +1,107 @@
-" ~/.vimrc -> ~/.vim/vimrc
-" Author: George Kaimakis <geomatus@mac.com>
-" -based on material from: Shawn Biddle, Steve Losh ---- 
-" Source: ~/.vim/...
-"
-" PATHOGEN & Compatability:------------------------------------------------{{{1
-"
-filetype off
-execute pathogen#infect('~/.dotfiles/vim/bundle/')
-filetype plugin indent on
+" ~/.vimrc -> ~/.vim/vimrc 
+" Author: Russ Winch
+" -based on material from: Shawn Biddle, Steve Losh, George Kaimakis <---- 
+" Source: ~/.vim/...  
+" 
+" PATHOGEN & Compatability:------------------------------------------------{{{1 
+" filetype off 
+execute pathogen#infect() 
+filetype plugin indent on 
 set nocompatible
 "
+" AIRLINE:-----------------------------------------------------------------{{{1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+"
 " SYNTASTIC:---------------------------------------------------------------{{{1
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_x = 0
 let g:syntastic_python_python_exec = 'python3'
+let g:syntastic_mode_map = { "mode": "passive" }
+" let g:syntastic_python_checkers = ['pylint']
+" let g:syntastic_shell = '/bin/bash'
+" let g:syntastic_python_pylint_exec='/Users/Russ/.vim/bundle/syntastic.git/syntax_checkers/python/pylint.vim'
+"
+" NEOCOMPETE:--------------------------------------------------------------{{{1
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
 
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+" let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 " NERDTree:----------------------------------------------------------------{{{1
 nnoremap <leader>ed <ESC>:NERDTreeTabsToggle<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 " Show SYNTAX HIGHLIGHTING GROUP for word under cursor:--------------------{{{1
 "
@@ -41,7 +119,8 @@ set t_Co=256
 syntax enable
 set shortmess+=Iw
 set number
-colorscheme desert
+colorscheme spacegray
+" colorscheme desert
 set background=dark
 set showmode
 set showcmd
@@ -60,7 +139,8 @@ set statusline="sn"
 set ruler
 
 highlight colorcolumn ctermbg=darkred
-highlight cursorline ctermbg=none ctermfg=none cterm=BOLD
+" highlight cursorline ctermbg=none ctermfg=none cterm=BOLD
+highlight cursorline ctermbg=236 ctermfg=none
 "highlight nontext ctermfg=darkgrey ctermbg=none guifg=4a4a59
 "highlight specialkey ctermfg=darkgrey ctermbg=none guifg=4a4a59
 
@@ -94,10 +174,12 @@ noremap <silent> <leader>wr <ESC>:set wrap!<CR><ESC>
 
 " remap the arrow keys:
 " : in NORMAL mode
-noremap <up> ddkP
+noremap <up> <Nop>
+" noremap <up> ddkP
 noremap <left> <Nop>
 noremap <right> <Nop>
-noremap <down> ddp
+noremap <down> <Nop>
+" noremap <down> ddp
 
 " : in INSERT mode
 inoremap <up> <Nop>
@@ -135,6 +217,13 @@ inoremap <c-j> <ESC>la
 " set up function block:
 inoremap <leader>{{ {}<ESC>i<CR><ESC>O
 
+"smash escape
+inoremap jk <ESC>
+
+" insert blank row
+nnoremap <leader>r o<ESC>
+nnoremap <leader>R O<ESC>
+
 " navigating between vim tabs
 nnoremap <leader>n <ESC>:tabn<CR>
 nnoremap <leader>p <ESC>:tabp<CR>
@@ -155,7 +244,7 @@ inoremap <silent> <leader>u <ESC>:set relativenumber!<CR><ESC>i
 
 " miscilanious mappings:
 " open vimrc in a split for a quick edit
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>ev :tabe $MYVIMRC<cr>
 " source the vimrc file
 nnoremap <leader>sv :source $MYVIMRC<cr>
 " -all-caps & continue in INSERT mode

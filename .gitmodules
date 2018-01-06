@@ -1,0 +1,30 @@
+[submodule "bundle/vim-commentary.git"]
+	path = bundle/vim-commentary.git
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "bundle/syntastic.git"]
+	path = bundle/syntastic.git
+	url = https://github.com/vim-syntastic/syntastic.git
+[submodule "bundle/vim-airline.git"]
+	path = bundle/vim-airline.git
+	url = https://github.com/vim-airline/vim-airline.git
+[submodule "bundle/vim-airline-themes.git"]
+	path = bundle/vim-airline-themes.git
+	url = https://github.com/vim-airline/vim-airline-themes.git
+[submodule "bundle/powerline-fonts.git"]
+	path = bundle/powerline-fonts.git
+	url = https://github.com/powerline/fonts.git
+[submodule "bundle/vim-fugitive.git"]
+	path = bundle/vim-fugitive.git
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "bundle/neocomplete.vim.git"]
+	path = bundle/neocomplete.vim.git
+	url = https://github.com/Shougo/neocomplete.vim.git
+[submodule "bundle/nerdtree.git"]
+	path = bundle/nerdtree.git
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "bundle/vim-autoclose.git"]
+	path = bundle/vim-autoclose.git
+	url = https://github.com/Townk/vim-autoclose.git
+[submodule "bundle/Spacegray.vim"]
+	path = bundle/Spacegray.vim
+	url = https://github.com/ajh17/Spacegray.vim.git
